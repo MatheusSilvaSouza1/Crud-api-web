@@ -1,9 +1,4 @@
-import cors from 'cors'
-import express from 'express'
+import app from "./app"
 
-const server = express()
-
-server.use(express.json())
-server.use(cors())
-
+const server = app
 server.listen(3333)
