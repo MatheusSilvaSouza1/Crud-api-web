@@ -1,0 +1,27 @@
+#page {
+    background: rgb(231,0,0);
+    background: -moz-radial-gradient(circle, rgba(231,0,0,1) 0%, rgba(255,10,37,1) 25%, rgba(105,33,44,1) 56%, rgba(0,0,0,1) 78%);
+    background: -webkit-radial-gradient(circle, rgba(231,0,0,1) 0%, rgba(255,10,37,1) 25%, rgba(105,33,44,1) 56%, rgba(0,0,0,1) 78%);
+    background: radial-gradient(circle, rgba(231,0,0,1) 0%, rgba(255,10,37,1) 25%, rgba(105,33,44,1) 56%, rgba(0,0,0,1) 78%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#e70000",endColorstr="#000000",GradientType=1);
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#cartao {
+    width: 40vw;
+    min-width: 300px;
+    max-width: 500px;
+    height: 20vh;
+    min-height: 325px;
+    box-shadow: 5px 5px rgba(0, 0, 0, 0.5);
+}
