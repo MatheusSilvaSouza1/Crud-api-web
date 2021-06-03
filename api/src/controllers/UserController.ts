@@ -5,7 +5,9 @@ import * as bcrypt from 'bcrypt'
 export default {
     async findAll(req: Request, res: Response) {
         try {
-            const users = await new User().findAll()
+            const {page} = req.params
+            const { users, count} = await new User().findAll(parseInt(page))
+            res.header('X-Total-Count', count + '')
             return res.status(200).json(users)
         } catch (error) {
             return res.status(500).json({ message: error.message })
@@ -82,6 +84,7 @@ export default {
             return res.status(500).json({ message: error.message })
         }
     },
+    
     async login(req: Request, res: Response){
         try {
             const {email, password} = req.body

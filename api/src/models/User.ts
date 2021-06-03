@@ -58,11 +58,18 @@ export class User {
         }
     }
 
-    async findAll() {
+    async findAll(page: number) {
+
         try {
             const repository = getRepository(User)
-            const users = await repository.find()
-            return users
+            const [users, count] = await repository.findAndCount({
+                take: 10,
+                skip: 10 * (page - 1),
+                order: {
+                    name: "ASC"
+                },
+            })
+            return { users, count }
         } catch (error) {
             console.log(error.message);
             throw new Error(error.message);
@@ -132,7 +139,7 @@ export class User {
                     email
                 }
             })
-            
+
             if (!exists) {
                 throw new Error("User do not exists!");
             }
@@ -142,7 +149,7 @@ export class User {
                     const token = await jwt.sign({ id: exists.id }, APP_SECRET as string, {
                         expiresIn: '1d'
                     })
-                    return { token}
+                    return { token }
                 } else {
                     throw new Error("Invalid email or password!");
                 }
