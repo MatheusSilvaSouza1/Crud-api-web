@@ -1,4 +1,4 @@
-import { Column, Entity, getRepository, PrimaryColumn } from "typeorm"
+import { BeforeInsert, BeforeUpdate, Column, Entity, getRepository, PrimaryColumn } from "typeorm";
 import { v4 as uuid } from 'uuid';
 
 @Entity()
@@ -13,7 +13,9 @@ export class User {
     @Column()
     login: string
 
-    @Column()
+    @Column({
+        select: false
+    })
     password: string
 
     @Column()
@@ -31,11 +33,21 @@ export class User {
     @Column()
     nameMother: string
 
-    @Column()
+    @Column({ nullable: true })
     inclusionDate: Date
 
-    @Column()
+    @Column({ nullable: true })
     changeDate: Date
+
+    @BeforeInsert()
+    insertDates() {
+        this.inclusionDate = new Date();
+    }
+
+    @BeforeUpdate()
+    updateDates() {
+        this.changeDate = new Date();
+    }
 
     constructor() {
         if (!this.id) {
@@ -43,17 +55,18 @@ export class User {
         }
     }
 
-    async findAll(){
+    async findAll() {
         try {
             const repository = getRepository(User)
             const users = await repository.find()
             return users
         } catch (error) {
             console.log(error.message);
+            throw new Error(error.message);
         }
     }
 
-    async insert(user: User){
+    async insert(user: User) {
         try {
             const repository = getRepository(User)
             const exists = await repository.findOne({
@@ -67,10 +80,11 @@ export class User {
             await repository.save(user)
         } catch (error) {
             console.log(error.message);
+            throw new Error(error.message);
         }
     }
 
-    async delete(id: string){
+    async delete(id: string) {
         try {
             const repository = getRepository(User)
             const exists = await repository.findOne({
@@ -84,10 +98,11 @@ export class User {
             await repository.remove(exists)
         } catch (error) {
             console.log(error.message);
+            throw new Error(error.message);
         }
     }
 
-    async update(user: User){
+    async update(user: User) {
         try {
             const repository = getRepository(User)
             const exists = await repository.findOne({
@@ -101,6 +116,7 @@ export class User {
             await repository.save(user)
         } catch (error) {
             console.log(error.message);
+            throw new Error(error.message);
         }
     }
 }
