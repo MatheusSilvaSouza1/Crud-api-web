@@ -36,6 +36,12 @@ export class User {
     @Column()
     nameMother: string
 
+    @Column({ default: false })
+    disabled: boolean
+
+    @Column({ default: false })
+    inactive: boolean
+
     @Column({ nullable: true })
     inclusionDate: Date
 
@@ -134,14 +140,18 @@ export class User {
         try {
             const repository = getRepository(User)
             const exists = await repository.findOne({
-                select: ["id", "email", "password"],
+                select: ["id", "email", "password", "inactive", "disabled"],
                 where: {
-                    email
+                    email,
                 }
             })
 
             if (!exists) {
                 throw new Error("User do not exists!");
+            }
+            
+            if (exists.inactive === true || exists.disabled === true) {
+                throw new Error("The user is inactive or disabled!");
             }
 
             if (exists) {
