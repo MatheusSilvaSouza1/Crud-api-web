@@ -16,18 +16,21 @@ function RecoverPassword() {
 
     async function handleSubmit(event: FormEvent) {
         event.preventDefault()
-        const response = await api.post('recover-password', {
-            email: email,
-            cpf: cpf,
-            nameMother: nameMother,
-            newPassword: newPassword
-        })
-        if (response.status === 200) {
-            window.alert('Senha alterada com sucesso!')
-            history.push('/')
-        }else {
-            window.alert(response.data)
+        try {
+            const response = await api.post('recover-password', {
+                email: email,
+                cpf: cpf,
+                nameMother: nameMother,
+                newPassword: newPassword
+            })
+            if (response.status === 200) {
+                window.alert('Senha alterada com sucesso!')
+                history.push('/')
+            }
+        } catch (error) {
+            window.alert(error.response.data.message)
         }
+
     }
 
     useEffect(() => {

@@ -31,7 +31,7 @@ const AuthProvider: React.FC = ({ children }) => {
         if (token) {
             api.defaults.headers.Authorization = `Bearer ${token}`
             setAuthenticated(true)
-            history.push('/empresas')
+            history.push('/list-users')
         } else {
             history.push('/')
         }
@@ -52,7 +52,7 @@ const AuthProvider: React.FC = ({ children }) => {
                 cookies.set('app-token', response.data.token, { path: '/', expires: date, maxAge: 28800 })
                 api.defaults.headers.Authorization = `Bearer ${cookies.get('app-token')}`
                 setAuthenticated(true)
-                history.push('/empresas')
+                history.push('/list-users')
             }
         } catch (error) {
             window.alert(error.response.data.message)
