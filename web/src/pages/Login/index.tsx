@@ -7,7 +7,7 @@ import './style.css'
 const Login = () => {
     const { handleLogin } = useContext(Context)
 
-    const [email, setEmail] = useState('')
+    const [login, setLogin] = useState('')
     const [password, setPassword] = useState('')
 
     return (
@@ -15,7 +15,7 @@ const Login = () => {
             <Container id="box">
                 <Card id="custom-card" >
                     <Form onSubmit={(e) => {
-                        handleLogin(e, email, password)
+                        handleLogin(e, login, password)
                     }}>
                         <Card.Header style={{ background: "#f1f3f3" }}>
                             Login
@@ -26,8 +26,8 @@ const Login = () => {
                                 <Form.Control
                                     id="input-login"
                                     type="login"
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
+                                    value={login}
+                                    onChange={(e) => setLogin(e.target.value)}
                                     placeholder="Informe o email"
                                     required
                                 />

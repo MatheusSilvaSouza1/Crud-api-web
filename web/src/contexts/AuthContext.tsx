@@ -38,11 +38,11 @@ const AuthProvider: React.FC = ({ children }) => {
         setLoading(false)
     }
 
-    async function handleLogin(event: FormEvent, email: string, password: string) {
+    async function handleLogin(event: FormEvent, login: string, password: string) {
         event.preventDefault()
         try {
             const response = await api.post('login', {
-                email,
+                login,
                 password
             })
 

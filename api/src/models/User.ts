@@ -39,9 +39,6 @@ export class User {
     @Column({ default: false })
     disabled: boolean
 
-    @Column({ default: false })
-    inactive: boolean
-
     @Column({ nullable: true })
     inclusionDate: Date
 
@@ -138,13 +135,13 @@ export class User {
         }
     }
 
-    async logar(email: string, password: string) {
+    async logar(login: string, password: string) {
         try {
             const repository = getRepository(User)
             const exists = await repository.findOne({
-                select: ["id", "email", "password", "inactive", "disabled"],
+                select: ["id", "login", "password", "disabled"],
                 where: {
-                    email,
+                    login,
                 }
             })
 
@@ -152,8 +149,8 @@ export class User {
                 throw new Error("User do not exists!");
             }
             
-            if (exists.inactive === true || exists.disabled === true) {
-                throw new Error("The user is inactive or disabled!");
+            if (exists.disabled === true) {
+                throw new Error("The user is disabled!");
             }
 
             if (exists) {
@@ -163,10 +160,10 @@ export class User {
                     })
                     return { token }
                 } else {
-                    throw new Error("Invalid email or password!");
+                    throw new Error("Invalid login or password!");
                 }
             } else {
-                throw new Error("Invalid email or password!");
+                throw new Error("Invalid login or password!");
             }
         } catch (error) {
             console.log(error);
@@ -184,7 +181,6 @@ export class User {
                     nameMother
                 }
             })
-            console.log(exists);
             if (!exists) {
                 throw new Error("User do not exists or data is not incorrect!");
             }

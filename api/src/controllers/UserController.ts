@@ -1,12 +1,11 @@
 import { Request, Response } from "express";
 import { User } from "../models/User";
-import * as bcrypt from 'bcrypt'
 
 export default {
     async findAll(req: Request, res: Response) {
         try {
-            const {page} = req.params
-            const { users, count} = await new User().findAll(parseInt(page))
+            const { page } = req.params
+            const { users, count } = await new User().findAll(parseInt(page))
             res.header('X-Total-Count', count + '')
             return res.status(200).json(users)
         } catch (error) {
@@ -65,7 +64,8 @@ export default {
                 phone,
                 cpf,
                 birthDate,
-                nameMother
+                nameMother,
+                disabled
             } = req.body
 
             const user = new User()
@@ -78,18 +78,18 @@ export default {
             user.cpf = cpf
             user.birthDate = birthDate
             user.nameMother = nameMother
+            user.disabled = disabled
             await user.update(user)
             return res.sendStatus(200)
         } catch (error) {
             return res.status(500).json({ message: error.message })
         }
     },
-    
-    async login(req: Request, res: Response){
+
+    async login(req: Request, res: Response) {
         try {
-            const {email, password} = req.body
-            const token = await new User().logar(email, password)
-            
+            const { login = '', password = '' } = req.body
+            const token = await new User().logar(login.toUpperCase(), password)
             return res.status(200).json(token)
         } catch (error) {
             return res.status(500).json({ message: error.message })
