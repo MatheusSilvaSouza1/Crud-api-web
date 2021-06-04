@@ -1,11 +1,21 @@
 import { Request, Response } from "express";
+import { IFilterFields } from "../interfaces/IFilterFiels";
 import { User } from "../models/User";
 
 export default {
     async findAll(req: Request, res: Response) {
         try {
             const { page } = req.params
-            const { users, count } = await new User().findAll(parseInt(page))
+            const { name = '', cpf = '', login = '', disabled } = req.query
+
+            const filterFields: IFilterFields = {
+                name: name.toString(),
+                cpf: cpf.toString(),
+                login: login.toString(),
+                disabled: disabled === 'true'
+            }
+
+            const { users, count } = await new User().findAll(parseInt(page), filterFields)
             res.header('X-Total-Count', count + '')
             return res.status(200).json(users)
         } catch (error) {
@@ -89,7 +99,7 @@ export default {
     async login(req: Request, res: Response) {
         try {
             const { login = '', password = '' } = req.body
-            const token = await new User().logar(login.toUpperCase(), password)
+            const token = await new User().logar(login, password)
             return res.status(200).json(token)
         } catch (error) {
             return res.status(500).json({ message: error.message })

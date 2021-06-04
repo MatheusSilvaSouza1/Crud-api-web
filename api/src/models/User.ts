@@ -1,8 +1,10 @@
-import { BeforeInsert, BeforeUpdate, Column, Entity, getRepository, PrimaryColumn } from "typeorm";
+import { BeforeInsert, BeforeUpdate, Column, Entity, getRepository, Like, PrimaryColumn } from "typeorm";
 import { v4 as uuid } from 'uuid';
 import * as bcrypt from 'bcrypt'
 import * as jwt from 'jsonwebtoken'
 import { APP_SECRET } from "../config/env";
+import { IFilterFields } from "../interfaces/IFilterFiels";
+import { organizesFilters } from "../util/organizesFilters";
 
 @Entity()
 export class User {
@@ -61,7 +63,7 @@ export class User {
         }
     }
 
-    async findAll(page: number) {
+    async findAll(page: number, filterFields: IFilterFields) {
 
         try {
             const repository = getRepository(User)
@@ -71,6 +73,7 @@ export class User {
                 order: {
                     name: "ASC"
                 },
+                where: organizesFilters(filterFields).map(fielter => fielter)
             })
             return { users, count }
         } catch (error) {
@@ -148,7 +151,7 @@ export class User {
             if (!exists) {
                 throw new Error("User do not exists!");
             }
-            
+
             if (exists.disabled === true) {
                 throw new Error("The user is disabled!");
             }
@@ -171,7 +174,7 @@ export class User {
         }
     }
 
-    async recoverPassword(email: string, cpf: string, nameMother: string, newPassword: string){
+    async recoverPassword(email: string, cpf: string, nameMother: string, newPassword: string) {
         try {
             const repository = getRepository(User)
             const exists = await repository.findOne({
