@@ -9,7 +9,6 @@ export interface IUser{
     birthDate: Date
     nameMother: string
     disabled: boolean
-    inactive: boolean
     inclusionDate?: Date
     changeDate?: Date
 }
