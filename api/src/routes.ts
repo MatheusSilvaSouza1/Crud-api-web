@@ -5,6 +5,7 @@ import { auth } from './middlewares/auth'
 const Routes = Router()
 
 Routes.post('/login', UserController.login)
+Routes.post('/recover-password', UserController.recoverPassword)
 
 Routes.use(auth)
 

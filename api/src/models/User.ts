@@ -77,7 +77,7 @@ export class User {
             })
             return { users, count }
         } catch (error) {
-            console.log(error.message);
+            console.log(error);
             throw new Error(error.message);
         }
     }
@@ -93,9 +93,10 @@ export class User {
             if (exists) {
                 throw new Error("User already exists!");
             }
+            user.password = await bcrypt.hash(user.password, 8)
             await repository.save(user)
         } catch (error) {
-            console.log(error.message);
+            console.log(error);
             throw new Error(error.message);
         }
     }
@@ -113,7 +114,7 @@ export class User {
             }
             await repository.remove(exists)
         } catch (error) {
-            console.log(error.message);
+            console.log(error);
             throw new Error(error.message);
         }
     }
@@ -129,9 +130,10 @@ export class User {
             if (!exists) {
                 throw new Error("User do not exists!");
             }
+            user.password = await bcrypt.hash(user.password, 8)
             await repository.save(user)
         } catch (error) {
-            console.log(error.message);
+            console.log(error);
             throw new Error(error.message);
         }
     }
@@ -167,7 +169,29 @@ export class User {
                 throw new Error("Invalid email or password!");
             }
         } catch (error) {
-            console.log(error.message);
+            console.log(error);
+            throw new Error(error.message);
+        }
+    }
+
+    async recoverPassword(email: string, cpf: string, nameMother: string, newPassword: string){
+        try {
+            const repository = getRepository(User)
+            const exists = await repository.findOne({
+                where: {
+                    email,
+                    cpf,
+                    nameMother
+                }
+            })
+            console.log(exists);
+            if (!exists) {
+                throw new Error("User do not exists or data is not incorrect!");
+            }
+            exists.password = await bcrypt.hash(newPassword, 8)
+            await repository.save(exists)
+        } catch (error) {
+            console.log(error);
             throw new Error(error.message);
         }
     }

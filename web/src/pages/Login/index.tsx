@@ -1,7 +1,9 @@
 import React, { useState, useContext } from 'react'
 import { Card, Button, Container, Form } from 'react-bootstrap'
-import { Context } from '../contexts/AuthContext'
+import { Context } from '../../contexts/AuthContext'
+import history from '../../history'
 import './style.css'
+
 const Login = () => {
     const { handleLogin } = useContext(Context)
 
@@ -11,7 +13,7 @@ const Login = () => {
     return (
         <div id="page">
             <Container id="box">
-                <Card id="cartao" >
+                <Card id="custom-card" >
                     <Form onSubmit={(e) => {
                         handleLogin(e, email, password)
                     }}>
@@ -41,6 +43,9 @@ const Login = () => {
                                     required
                                 />
                             </Form.Group>
+                            <Button variant="link" size="sm" onClick={() => history.push('recover-password')}>
+                                Esqueceu a senha?
+                            </Button>
                         </Card.Body>
                         <Card.Footer className="text-right">
                             <Button id="btn-login" variant="outline-primary" type="submit">

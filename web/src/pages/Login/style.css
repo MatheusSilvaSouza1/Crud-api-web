@@ -1,0 +1,23 @@
+#page {
+    background: #c53939;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#custom-card {
+    width: 40vw;
+    min-width: 300px;
+    max-width: 500px;
+    height: 37vh;
+    min-height: 325px;
+    box-shadow: 5px 5px rgba(0, 0, 0, 0.5);
+}

@@ -31,7 +31,7 @@ export default {
 
             user.name = name
             user.login = login
-            user.password = await bcrypt.hash(password, 8)
+            user.password = password
             user.email = email
             user.phone = phone
             user.cpf = cpf
@@ -72,7 +72,7 @@ export default {
             user.id = id
             user.name = name
             user.login = login
-            user.password = await bcrypt.hash(password, 8)
+            user.password = password
             user.email = email
             user.phone = phone
             user.cpf = cpf
@@ -91,6 +91,16 @@ export default {
             const token = await new User().logar(email, password)
             
             return res.status(200).json(token)
+        } catch (error) {
+            return res.status(500).json({ message: error.message })
+        }
+    },
+
+    async recoverPassword(req: Request, res: Response) {
+        try {
+            const { email, cpf, nameMother, newPassword } = req.body
+            await new User().recoverPassword(email, cpf, nameMother, newPassword)
+            return res.sendStatus(200)
         } catch (error) {
             return res.status(500).json({ message: error.message })
         }
