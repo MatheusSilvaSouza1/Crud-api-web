@@ -1,6 +1,7 @@
 module.exports = {
     type: 'sqlite',
     database: "./src/database/db.sqlite",
+    logging: false,
     entities: [
         "./src/models/*.ts"
     ],
