@@ -64,17 +64,17 @@ export class User {
     }
 
     async findAll(page: number, filterFields: IFilterFields) {
-
         try {
             const repository = getRepository(User)
-            const [users, count] = await repository.findAndCount({
-                take: 10,
-                skip: 10 * (page - 1),
-                order: {
-                    name: "ASC"
-                },
-                where: organizesFilters(filterFields).map(fielter => fielter)
-            })
+            const [users, count] = await repository
+                .findAndCount({
+                    take: 10,
+                    skip: 10 * (page - 1),
+                    order: {
+                        name: "ASC"
+                    },
+                    where: organizesFilters(filterFields).map((fielter: any) => fielter)
+                })
             return { users, count }
         } catch (error) {
             console.log(error);
