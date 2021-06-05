@@ -5,6 +5,7 @@ import CreateUser from './pages/createUser'
 import ListUsers from './pages/listUsers'
 import Login from './pages/Login'
 import RecoverPassword from './pages/recoverPassword'
+import UpdateUser from './pages/updateUser'
 
 function Routes() {
     return (
@@ -13,6 +14,7 @@ function Routes() {
             <Route path="/recover-password" exact component={RecoverPassword} />
             <CustomRouter path="/list-users" exact component={ListUsers} />
             <CustomRouter path="/create-user" exact component={CreateUser} />
+            <CustomRouter path="/update-user/:id" exact component={UpdateUser} />
         </Switch>
     )
 }

@@ -15,7 +15,10 @@ export class User {
     @Column()
     name: string
 
-    @Column()
+    @Column({
+        type: "varchar",
+        unique: true,
+    })
     login: string
 
     @Column({
@@ -66,6 +69,7 @@ export class User {
     async findAll(page: number, filterFields: IFilterFields) {
         try {
             const repository = getRepository(User)
+
             const [users, count] = await repository
                 .findAndCount({
                     take: 10,
@@ -76,6 +80,25 @@ export class User {
                     where: organizesFilters(filterFields).map((fielter: any) => fielter)
                 })
             return { users, count }
+        } catch (error) {
+            console.log(error);
+            throw new Error(error.message);
+        }
+    }
+
+    async findOne(id: string){
+        try {
+            const repository = getRepository(User)
+            const user = await repository.findOne({
+                where: {
+                    id
+                }
+            })
+            if (!user) {
+                throw new Error("User not found!");
+            }
+            
+            return user
         } catch (error) {
             console.log(error);
             throw new Error(error.message);
@@ -147,7 +170,6 @@ export class User {
                     login,
                 }
             })
-
             if (!exists) {
                 throw new Error("User do not exists!");
             }
@@ -187,6 +209,11 @@ export class User {
             if (!exists) {
                 throw new Error("User do not exists or data is not incorrect!");
             }
+
+            if (exists.disabled === true) {
+                throw new Error("The user is disabled!");
+            }
+
             exists.password = await bcrypt.hash(newPassword, 8)
             await repository.save(exists)
         } catch (error) {

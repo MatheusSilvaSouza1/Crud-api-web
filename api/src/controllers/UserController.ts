@@ -5,19 +5,26 @@ import { User } from "../models/User";
 export default {
     async findAll(req: Request, res: Response) {
         try {
-            const { page } = req.params
-            const { name = '', cpf = '', login = '', disabled } = req.query
-
+            const { name = '', cpf = '', login = '', disabled = false, page = 1 } = req.query
             const filterFields: IFilterFields = {
                 name: name.toString(),
                 cpf: cpf.toString(),
                 login: login.toString(),
                 disabled: disabled === 'true'
             }
-
-            const { users, count } = await new User().findAll(parseInt(page), filterFields)
+            const { users, count } = await new User().findAll(parseInt(page.toString()), filterFields)
             res.header('X-Total-Count', count + '')
             return res.status(200).json(users)
+        } catch (error) {
+            return res.status(500).json({ message: error.message })
+        }
+    },
+
+    async findOne(req: Request, res: Response) {
+        try {
+            const { id } = req.params
+            const user = await new User().findOne(id)
+            return res.status(200).json(user)
         } catch (error) {
             return res.status(500).json({ message: error.message })
         }
@@ -56,6 +63,8 @@ export default {
     async delete(req: Request, res: Response) {
         try {
             const { id } = req.params
+            console.log(req.body);
+
             await new User().delete(id)
             return res.sendStatus(200)
         } catch (error) {

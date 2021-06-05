@@ -3,6 +3,8 @@ import { Badge, Button, Card, Col, Container, Form, Pagination, Table } from 're
 import history from '../../history'
 import { IUser } from '../../interfaces/IUser'
 import api from '../../services/api'
+import { IoMdPersonAdd, IoMdCreate, IoMdTrash } from 'react-icons/io'
+import moment from 'moment';
 
 function ListUsers() {
 
@@ -20,7 +22,7 @@ function ListUsers() {
     useEffect(() => {
         async function getData() {
             try {
-                const response = await api.get(`/user/${page}?name=${name}&cpf=${cpf}&login=${login}&disabled=${disabled}`)
+                const response = await api.get(`/user/?page=${page}&name=${name}&cpf=${cpf}&login=${login}&disabled=${disabled}`)
                 setUsers(response.data)
                 setTotalUsers(response.headers["x-total-count"])
             } catch (error) {
@@ -100,12 +102,11 @@ function ListUsers() {
                         variant="success"
                         onClick={() => history.push('create-user')}
                     >
-                        Novo usuário
+                        Novo usuário <Badge variant="light"><IoMdPersonAdd /></Badge>
                     </Button>
                 </Card.Footer>
             </Card>
             <br />
-
             <h6>Total de usuários:  <Badge variant="secondary">{totalUsers}</Badge></h6>
             <Table striped bordered hover size="sm" responsive>
                 <thead>
@@ -121,6 +122,7 @@ function ListUsers() {
                 </thead>
                 <tbody>
                     {users?.map((user) => {
+
                         return (
                             <tr id={user.id} key={user.id}>
                                 <td>{user.name}</td>
@@ -132,9 +134,24 @@ function ListUsers() {
                                         <Badge variant="success">Ativo</Badge>
                                 }
                                 </th>
-                                <td>{new Date(user.birthDate).toLocaleDateString()}</td>
-                                <td><Button variant="warning" size="sm">Warning</Button></td>
-                                <td><Button variant="danger" size="sm">Danger</Button></td>
+                                <td>{moment.utc(user.birthDate).format('DD/MM/YYYY')}</td>
+                                <td className="text-center">
+                                    <Button
+                                        variant="warning"
+                                        size="sm"
+                                        onClick={() => history.push(`update-user/${user.id}`)}
+                                    >
+                                        <IoMdCreate size={20} />
+                                    </Button>
+                                </td>
+                                <td className="text-center">
+                                    <Button
+                                        variant="danger"
+                                        size="sm"
+                                    >
+                                        <IoMdTrash size={20} />
+                                    </Button>
+                                </td>
                             </tr>
                         )
                     })}
