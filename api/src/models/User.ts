@@ -124,18 +124,21 @@ export class User {
         }
     }
 
-    async delete(id: string) {
+    delete(ids: string[]) {
         try {
             const repository = getRepository(User)
-            const exists = await repository.findOne({
-                where: {
-                    id
+            ids.map(async (id) => {
+                const exists = await repository.findOne({
+                    where: {
+                        id
+                    }
+                })
+                if (!exists) {
+                    throw new Error("User do not exists!");
                 }
+                exists.disabled = true
+                await repository.save(exists)
             })
-            if (!exists) {
-                throw new Error("User do not exists!");
-            }
-            await repository.remove(exists)
         } catch (error) {
             console.log(error);
             throw new Error(error.message);

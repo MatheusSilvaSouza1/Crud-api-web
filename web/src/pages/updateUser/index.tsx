@@ -38,17 +38,6 @@ function UpdateUser() {
 
     async function handleSubmit(event: FormEvent) {
         event.preventDefault()
-        console.log({
-            id,
-            name,
-            login,
-            password,
-            email,
-            phone,
-            cpf,
-            birthDate,
-            nameMother,
-        });
 
         try {
             const response = await api.put(`user/${id}`, {

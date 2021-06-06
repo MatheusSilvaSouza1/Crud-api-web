@@ -16,16 +16,6 @@ function CreateUser() {
 
     async function handleSubmit(event: FormEvent) {
         event.preventDefault()
-        console.log({
-            name,
-            login,
-            password,
-            email,
-            phone,
-            cpf,
-            birthDate,
-            nameMother,
-        });
         try {
             const response = await api.post('user', {
                 name,

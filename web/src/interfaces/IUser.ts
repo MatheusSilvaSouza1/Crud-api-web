@@ -11,4 +11,5 @@ export interface IUser{
     disabled: boolean
     inclusionDate?: Date
     changeDate?: Date
+    selected?: boolean
 }

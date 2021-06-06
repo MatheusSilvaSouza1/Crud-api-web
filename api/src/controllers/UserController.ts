@@ -62,10 +62,9 @@ export default {
 
     async delete(req: Request, res: Response) {
         try {
-            const { id } = req.params
-            console.log(req.body);
+            const { ids } = req.body
 
-            await new User().delete(id)
+            await new User().delete(ids)
             return res.sendStatus(200)
         } catch (error) {
             return res.status(500).json({ message: error.message })

@@ -13,6 +13,6 @@ Routes.get('/user', UserController.findAll)
 Routes.post('/user', UserController.insert)
 Routes.get('/user/:id', UserController.findOne)
 Routes.put('/user/:id', UserController.update)
-Routes.delete('/user/:id', UserController.delete)
+Routes.delete('/user', UserController.delete)
 
 export default Routes
