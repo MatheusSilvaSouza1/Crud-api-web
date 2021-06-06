@@ -1,8 +1,9 @@
 import React, { FormEvent, useState } from 'react'
-import { Button, Col, Container, Form } from 'react-bootstrap'
+import { Button, Card, Col, Container, Form } from 'react-bootstrap'
 import moment from 'moment';
 import history from '../../history'
 import api from '../../services/api'
+import CustomHeader from '../../components/CustomHeader';
 
 function CreateUser() {
 
@@ -38,6 +39,12 @@ function CreateUser() {
 
     return (
         <Container>
+            <CustomHeader btnBack={() => history.push('/list-users')} >
+                <Card.Body className="text-center">
+                    <Card.Title>Criar usuário</Card.Title>
+                </Card.Body>
+            </CustomHeader>
+            <br />
             <Form onSubmit={handleSubmit}>
                 <Form.Group>
                     <Form.Label>Nome</Form.Label>

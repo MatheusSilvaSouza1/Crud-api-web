@@ -5,6 +5,7 @@ import { IUser } from '../../interfaces/IUser'
 import api from '../../services/api'
 import { IoMdPersonAdd, IoMdCreate, IoMdTrash } from 'react-icons/io'
 import moment from 'moment';
+import CustomHeader from '../../components/CustomHeader'
 
 function ListUsers() {
 
@@ -80,8 +81,7 @@ function ListUsers() {
 
     return (
         <Container>
-            <Card border="ligth" >
-                <Card.Header className="text-center">Usuários</Card.Header>
+            <CustomHeader btnBack={() => history.goBack()}>
                 <Card.Body>
                     <Card.Title className="text-center">Pesquisa</Card.Title>
                     <Form>
@@ -129,7 +129,7 @@ function ListUsers() {
                         Novo usuário <Badge variant="light"><IoMdPersonAdd /></Badge>
                     </Button>
                 </Card.Footer>
-            </Card>
+            </CustomHeader>
             <br />
             <h6>Total de usuários:  <Badge variant="secondary">{totalUsers}</Badge></h6>
             <Table striped bordered hover size="sm" responsive>

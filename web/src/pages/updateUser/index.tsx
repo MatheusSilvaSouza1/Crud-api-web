@@ -1,9 +1,10 @@
 import React, { FormEvent, useEffect, useState } from 'react'
-import { Button, Col, Container, Form } from 'react-bootstrap'
+import { Button, Card, Col, Container, Form } from 'react-bootstrap'
 import { useParams } from 'react-router'
 import moment from 'moment';
 import history from '../../history'
 import api from '../../services/api'
+import CustomHeader from '../../components/CustomHeader';
 
 
 function UpdateUser() {
@@ -63,6 +64,11 @@ function UpdateUser() {
 
     return (
         <Container>
+            <CustomHeader btnBack={() => history.push('/list-users')} >
+                <Card.Body className="text-center">
+                    <Card.Title>Editar usuário</Card.Title>
+                </Card.Body>
+            </CustomHeader>
             <Form onSubmit={handleSubmit}>
                 <Form.Group>
                     <Form.Label>Nome</Form.Label>
