@@ -3,7 +3,7 @@ import { Badge, Button, Card, Col, Container, Form, Pagination, Table } from 're
 import history from '../../history'
 import { IUser } from '../../interfaces/IUser'
 import api from '../../services/api'
-import { IoMdPersonAdd, IoMdCreate, IoMdTrash } from 'react-icons/io'
+import { IoMdPersonAdd, IoMdCreate, IoMdTrash, IoMdGrid } from 'react-icons/io'
 import moment from 'moment';
 import CustomHeader from '../../components/CustomHeader'
 
@@ -120,7 +120,14 @@ function ListUsers() {
                         </Form.Row>
                     </Form>
                 </Card.Body>
-                <Card.Footer className="text-right">
+                <Card.Footer style={{display: 'flex', justifyContent: 'space-between'}}>
+                    <Button
+                        type="button"
+                        variant="info"
+                        onClick={() => history.push('/report')}
+                    >
+                        Relatório <Badge variant="light"><IoMdGrid /></Badge>
+                    </Button>
                     <Button
                         type="button"
                         variant="success"

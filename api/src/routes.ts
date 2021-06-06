@@ -1,5 +1,6 @@
 import { Router } from 'express'
 import AuthenticationController from './controllers/AuthenticationController'
+import ReportController from './controllers/ReportController'
 import UserController from './controllers/UserController'
 import { auth } from './middlewares/auth'
 
@@ -15,5 +16,8 @@ Routes.post('/user', UserController.insert)
 Routes.get('/user/:id', UserController.findOne)
 Routes.put('/user/:id', UserController.update)
 Routes.delete('/user', UserController.delete)
+
+
+Routes.get('/report', ReportController.report)
 
 export default Routes
