@@ -1,11 +1,12 @@
 import { Router } from 'express'
+import AuthenticationController from './controllers/AuthenticationController'
 import UserController from './controllers/UserController'
 import { auth } from './middlewares/auth'
 
 const Routes = Router()
 
-Routes.post('/login', UserController.login)
-Routes.post('/recover-password', UserController.recoverPassword)
+Routes.post('/login', AuthenticationController.login)
+Routes.post('/recover-password', AuthenticationController.recoverPassword)
 
 Routes.use(auth)
 
