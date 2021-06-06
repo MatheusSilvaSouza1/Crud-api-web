@@ -1,9 +1,9 @@
 import React, { FormEvent, useEffect, useState } from 'react'
 import { Button, Col, Container, Form } from 'react-bootstrap'
 import { useParams } from 'react-router'
+import moment from 'moment';
 import history from '../../history'
 import api from '../../services/api'
-import moment from 'moment';
 
 
 function UpdateUser() {

@@ -86,7 +86,7 @@ export class User {
         }
     }
 
-    async findOne(id: string){
+    async findOne(id: string) {
         try {
             const repository = getRepository(User)
             const user = await repository.findOne({
@@ -97,7 +97,7 @@ export class User {
             if (!user) {
                 throw new Error("User not found!");
             }
-            
+
             return user
         } catch (error) {
             console.log(error);
@@ -151,12 +151,24 @@ export class User {
             const exists = await repository.findOne({
                 where: {
                     id: user.id
-                }
+                },
+                select: [
+                    "id", "name", "login",
+                    "password", "email", "phone",
+                    "cpf", "birthDate", "nameMother", "disabled"
+                ]
             })
+
             if (!exists) {
                 throw new Error("User do not exists!");
             }
-            user.password = await bcrypt.hash(user.password, 8)
+
+            if (user.password !== '' && !await bcrypt.compare(user.password, exists.password)) {
+                user.password = await bcrypt.hash(user.password, 8)
+            } else {
+                user.password = exists.password
+            }
+
             await repository.save(user)
         } catch (error) {
             console.log(error);
@@ -191,7 +203,7 @@ export class User {
                     throw new Error("Invalid login or password!");
                 }
             } else {
-                throw new Error("Invalid login or password!");
+                throw new Error("User do not exists!");
             }
         } catch (error) {
             console.log(error);

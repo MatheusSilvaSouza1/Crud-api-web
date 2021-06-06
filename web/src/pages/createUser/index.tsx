@@ -1,5 +1,6 @@
 import React, { FormEvent, useState } from 'react'
 import { Button, Col, Container, Form } from 'react-bootstrap'
+import moment from 'moment';
 import history from '../../history'
 import api from '../../services/api'
 
@@ -96,6 +97,7 @@ function CreateUser() {
                             <Form.Control
                                 type="text"
                                 placeholder="Enter Cpf"
+                                maxLength={11}
                                 value={cpf}
                                 onChange={(e) => setCpf(e.target.value)}
                             />
@@ -107,7 +109,7 @@ function CreateUser() {
                             <Form.Control
                                 type="date"
                                 placeholder="Enter email"
-                                max={new Date().toLocaleDateString()}
+                                max={moment.utc().format('YYYY-MM-DD').toString()}
                                 value={birthDate}
                                 onChange={(e) => setBirthDate(e.target.value)}
                             />
