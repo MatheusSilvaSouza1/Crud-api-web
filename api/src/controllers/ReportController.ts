@@ -7,7 +7,6 @@ export default {
     async report(req: Request, res: Response) {
         const repository = getRepository(User)
         const { inclusionFirst, inclusionEnd, changedFirst, changedEnd, minAge, maxAge } = req.query
-        console.log({ inclusionFirst, inclusionEnd, changedFirst, changedEnd, minAge, maxAge: parseInt(maxAge as string) });
 
         const [data, count] = await repository
             .createQueryBuilder("user")
