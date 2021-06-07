@@ -11,7 +11,7 @@ function ListUsers() {
 
     const [page, setPage] = useState(1)
     const [totalUsers, setTotalUsers] = useState(0)
-    const [users, setUsers] = useState<IUser[]>()
+    const [users, setUsers] = useState<IUser[]>([])
 
     //? Filtros
     const [name, setName] = useState<string>('')
@@ -120,7 +120,7 @@ function ListUsers() {
                         </Form.Row>
                     </Form>
                 </Card.Body>
-                <Card.Footer style={{display: 'flex', justifyContent: 'space-between'}}>
+                <Card.Footer style={{ display: 'flex', justifyContent: 'space-between' }}>
                     <Button
                         type="button"
                         variant="info"
@@ -139,62 +139,64 @@ function ListUsers() {
             </CustomHeader>
             <br />
             <h6>Total de usuários:  <Badge variant="secondary">{totalUsers}</Badge></h6>
-            <Table striped bordered hover size="sm" responsive>
-                <thead>
-                    <tr>
-                        <td className="text-center">
-                            <Button
-                                variant="danger"
-                                onClick={handleDelete}
-                                size="sm"
-                            >
-                                <IoMdTrash size={15} />
-                            </Button>
-                        </td>
-                        <th>Nome</th>
-                        <th>Cpf</th>
-                        <th>Login</th>
-                        <th>Situação</th>
-                        <th>Data de nasc.</th>
-                        <th>Editar</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {users?.map((user) => {
+            {users?.length > 0 &&
+                <Table striped bordered hover size="sm" responsive>
+                    <thead>
+                        <tr>
+                            <td className="text-center">
+                                <Button
+                                    variant="danger"
+                                    onClick={handleDelete}
+                                    size="sm"
+                                >
+                                    <IoMdTrash size={15} />
+                                </Button>
+                            </td>
+                            <th>Nome</th>
+                            <th>Cpf</th>
+                            <th>Login</th>
+                            <th>Situação</th>
+                            <th>Data de nasc.</th>
+                            <th>Editar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {users?.map((user) => {
+                            return (
+                                <tr id={user.id} key={user.id}>
+                                    <td className="text-center">
+                                        <Form.Check
+                                            type="checkbox"
+                                            checked={user.selected}
+                                            onChange={() => { user.selected = !user.selected }}
+                                        />
+                                    </td>
+                                    <td>{user.name}</td>
+                                    <td>{user.cpf}</td>
+                                    <td>{user.login}</td>
+                                    <th>{
+                                        user.disabled ?
+                                            <Badge variant="danger">Desativado</Badge> :
+                                            <Badge variant="success">Ativo</Badge>
+                                    }
+                                    </th>
+                                    <td>{moment.utc(user.birthDate).format('DD/MM/YYYY')}</td>
+                                    <td className="text-center">
+                                        <Button
+                                            variant="warning"
+                                            size="sm"
+                                            onClick={() => history.push(`update-user/${user.id}`)}
+                                        >
+                                            <IoMdCreate size={20} />
+                                        </Button>
+                                    </td>
+                                </tr>
+                            )
+                        })}
+                    </tbody>
+                </Table>
+            }
 
-                        return (
-                            <tr id={user.id} key={user.id}>
-                                <td className="text-center">
-                                    <Form.Check
-                                        type="checkbox"
-                                        checked={user.selected}
-                                        onChange={() => { user.selected = !user.selected }}
-                                    />
-                                </td>
-                                <td>{user.name}</td>
-                                <td>{user.cpf}</td>
-                                <td>{user.login}</td>
-                                <th>{
-                                    user.disabled ?
-                                        <Badge variant="danger">Desativado</Badge> :
-                                        <Badge variant="success">Ativo</Badge>
-                                }
-                                </th>
-                                <td>{moment.utc(user.birthDate).format('DD/MM/YYYY')}</td>
-                                <td className="text-center">
-                                    <Button
-                                        variant="warning"
-                                        size="sm"
-                                        onClick={() => history.push(`update-user/${user.id}`)}
-                                    >
-                                        <IoMdCreate size={20} />
-                                    </Button>
-                                </td>
-                            </tr>
-                        )
-                    })}
-                </tbody>
-            </Table>
             <div style={{
                 display: 'flex',
                 justifyContent: 'center',

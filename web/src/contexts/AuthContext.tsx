@@ -2,8 +2,7 @@ import React, { createContext, FormEvent, useEffect, useState } from 'react'
 import history from '../history'
 import api from '../services/api'
 import Cookies from 'universal-cookie'
-// import SweetAlert from 'react-bootstrap-sweetalert'
-// import IAlert from '../models/IAlert'
+
 
 
 interface AuthContextData {
@@ -19,13 +18,12 @@ const AuthProvider: React.FC = ({ children }) => {
     const cookies = new Cookies()
     const [authenticated, setAuthenticated] = useState(false)
     const [loading, setLoading] = useState(true)
-    // const [alert, setAlert] = useState<IAlert>({ type: undefined, titulo: '', show: false })
 
     useEffect(() => {
-        verificarCredenciais()
+        verifyAuthentication()
     })
 
-    async function verificarCredenciais() {
+    async function verifyAuthentication() {
         const token = cookies.get('app-token')
 
         if (token) {
@@ -61,15 +59,6 @@ const AuthProvider: React.FC = ({ children }) => {
 
     return (
         <Context.Provider value={{ loading, authenticated, handleLogin }}>
-            {/* <SweetAlert
-                title={alert.titulo}
-                show={alert.show}
-                type={alert.type}
-                onConfirm={() => setAlert({ type: 'default', titulo: '', show: false })}
-                btnSize="sm"
-            >
-                {alert.mensagem && alert.mensagem}
-            </SweetAlert> */}
             {children}
         </Context.Provider>
     )

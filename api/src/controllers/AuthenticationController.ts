@@ -26,17 +26,13 @@ export default {
                 throw new Error("The user is disabled!");
             }
 
-            if (exists) {
-                if (await bcrypt.compare(password, exists.password)) {
-                    const token = await jwt.sign({ id: exists.id }, APP_SECRET as string, {
-                        expiresIn: '1d'
-                    })
-                    return res.status(200).json({ token })
-                } else {
-                    throw new Error("Invalid login or password!");
-                }
+            if (await bcrypt.compare(password, exists.password)) {
+                const token = await jwt.sign({ id: exists.id }, APP_SECRET as string, {
+                    expiresIn: '1d'
+                })
+                return res.status(200).json({ token })
             } else {
-                throw new Error("User do not exists!");
+                throw new Error("Invalid login or password!");
             }
         } catch (error) {
             return res.status(500).json({ message: error.message })

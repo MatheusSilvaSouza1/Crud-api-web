@@ -1,5 +1,5 @@
 import React, { FormEvent, useEffect, useState } from 'react'
-import { Button, Card, Container, Form } from 'react-bootstrap'
+import { Button, Card, Col, Container, Form, Row } from 'react-bootstrap'
 import history from '../../history'
 import api from '../../services/api'
 import './style.css'
@@ -34,8 +34,11 @@ function RecoverPassword() {
     }
 
     useEffect(() => {
-        if (newPassword === confirmPassword) {
+        if (newPassword === confirmPassword &&
+            (newPassword !== '' && confirmPassword !== '')) {
             setPasswordsIsValid(true)
+        } else {
+            setPasswordsIsValid(false)
         }
     }, [newPassword, confirmPassword])
 
@@ -44,10 +47,6 @@ function RecoverPassword() {
             <Container id="box">
                 <Card id="custom-card" >
                     <Form
-                        validated={passwordsIsValid}
-                        // onSubmit={(e) => {
-                        //     handleLogin(e, email, password)
-                        // }}
                         onSubmit={handleSubmit}
                     >
                         <Card.Body>
@@ -89,32 +88,44 @@ function RecoverPassword() {
                                 <Form.Control
                                     id="input-password"
                                     type="password"
+                                    isValid={passwordsIsValid}
                                     value={newPassword}
                                     onChange={(e) => setNewPassword(e.target.value)}
                                     placeholder="Informe a senha"
                                     required
                                 />
-                                <Form.Control.Feedback type="invalid">
-                                    Please provide a valid state.
-                                </Form.Control.Feedback>
                             </Form.Group>
                             <Form.Group>
                                 <Form.Label>Confirmar a nova senha</Form.Label>
                                 <Form.Control
                                     id="input-confirmPassword"
                                     type="password"
+                                    isValid={passwordsIsValid}
                                     value={confirmPassword}
                                     onChange={(e) => setConfirmPassword(e.target.value)}
                                     placeholder="Confirmar"
                                     required
                                 />
                                 <Form.Control.Feedback type="invalid">
-                                    Please provide a valid state.
+                                    As senhas não estão iguais.
                                 </Form.Control.Feedback>
                             </Form.Group>
                         </Card.Body>
-                        <Card.Footer className="text-right">
-                            <Button id="btn-login" variant="outline-primary" type="submit">Entrar</Button>
+                        <Card.Footer >
+                            <Row>
+                                <Col className="text-left">
+                                    <Button id="btn-back"
+                                        variant="outline-secondary"
+                                        type="button"
+                                        onClick={() => history.push('/')}
+                                    >
+                                        Voltar
+                                    </Button>
+                                </Col>
+                                <Col className="text-right">
+                                    <Button id="btn-login" variant="outline-primary" type="submit">Entrar</Button>
+                                </Col>
+                            </Row>
                         </Card.Footer>
                     </Form>
                 </Card>
