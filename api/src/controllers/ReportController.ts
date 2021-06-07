@@ -16,6 +16,7 @@ export default {
                 "((strftime('%Y',date()) - strftime('%Y', user.birthDate)) > :minAge) and ((strftime('%Y',date()) - strftime('%Y', user.birthDate)) < :maxAge)",
                 { minAge: parseInt(minAge as string), maxAge: parseInt(maxAge as string) }
             )
+            .orderBy("user.name", "ASC")
             .getManyAndCount()
         res.header('X-Total-Count', count + '')
         return res.status(200).json(data)
