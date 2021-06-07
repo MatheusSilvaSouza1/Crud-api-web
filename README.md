@@ -1,15 +1,15 @@
 # Tecnologias :rocket:
 * Api
-    * node / typescript
-    * jwt
-    * bcrypt
-    * typeorm
-    * sqlite
+    * [node](https://nodejs.org/en/) / [typescript](https://www.typescriptlang.org/)
+    * [jwt](https://www.npmjs.com/package/jsonwebtoken) 
+    * [bcrypt](https://www.npmjs.com/package/bcrypt) 
+    * [typeorm](https://typeorm.io/#/) 
+    * [sqlite](https://www.sqlite.org/index.html)
 
 * Front End
-    * React / typescript
-    * Bootstrap
-    * Axios
+    * [react](https://pt-br.reactjs.org/) / [typescript](https://www.typescriptlang.org/)
+    * [react Bootstrap](https://react-bootstrap.github.io/)
+    * [axios](https://www.npmjs.com/package/axios)
 
 # Requisitos :+1:
     * node
