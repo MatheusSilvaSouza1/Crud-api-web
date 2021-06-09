@@ -1,9 +1,7 @@
-import moment from 'moment';
 import React, { FormEvent, useState } from 'react';
-import { Badge, Button, Card, Col, Container, Dropdown, DropdownButton, Form, Row, Table } from 'react-bootstrap';
+import { Card, Col, Container, Dropdown, DropdownButton, Form, Row } from 'react-bootstrap';
 import CustomHeader from '../../components/CustomHeader';
 import history from '../../history';
-import { IUser } from '../../interfaces/IUser';
 import api from '../../services/api';
 
 function Report() {
@@ -15,8 +13,9 @@ function Report() {
     const [changedEnd, setChangedEnd] = useState('2021-06-30')
     const [minAge, setMinAge] = useState(18)
     const [maxAge, setMaxAge] = useState(26)
+    const [typeReport, setTypeReport] = useState('pdf')
 
-    const [users, setUsers] = useState<IUser[]>([])
+    const [loading, setLoading] = useState(false)
 
     function handleSelect(ageGroup: any) {
         switch (parseInt(ageGroup.target.value)) {
@@ -46,13 +45,26 @@ function Report() {
     async function handleSubmitFielter(event: FormEvent) {
         event.preventDefault()
         try {
-            const response = await api
-                .get(`report?inclusionFirst=${inclusionFirst}&inclusionEnd=${inclusionEnd}`
-                    + `&changedFirst=${changedFirst}&changedEnd=${changedEnd}`
-                    + `&minAge=${minAge}&maxAge=${maxAge}`)
-            setUsers(response.data)
+            setLoading(true)
+            api.get(`report?inclusionFirst=${inclusionFirst}&inclusionEnd=${inclusionEnd}`
+                + `&changedFirst=${changedFirst}&changedEnd=${changedEnd}`
+                + `&minAge=${minAge}&maxAge=${maxAge}&type=${typeReport}`,
+                { responseType: 'arraybuffer' }
+            ).then(response => {
+                const type = response.headers['content-type']
+                const blob = new Blob([response.data], { type })
+                const link = document.createElement('a')
+                link.href = window.URL.createObjectURL(blob)
+                link.download = `file.${typeReport}`
+                link.click()
+                setLoading(false)
+            }).catch(error => {
+                console.log(error.response.data.message);
+                setLoading(false)
+            })
         } catch (error) {
             console.log(error.response.data.message);
+            setLoading(false)
         }
     }
 
@@ -126,53 +138,35 @@ function Report() {
                         </Row>
                         <br />
                         <Row>
-                            {(users?.length > 0) &&
-                                <Col className="text-left">
-                                    <DropdownButton variant="success" title="Export" id="bg-nested-dropdown">
-                                        <Dropdown.Item eventKey="1">Excel</Dropdown.Item>
-                                        <Dropdown.Item eventKey="2">Pdf</Dropdown.Item>
-                                        <Dropdown.Item eventKey="3">Word</Dropdown.Item>
-                                    </DropdownButton>
-                                </Col>}
-                            <Col className="text-right">
-                                <Button variant="info" type="submit">Buscar</Button>
+                            <Col className="text-left">
+                                <DropdownButton
+                                    id="bg-nested-dropdown"
+                                    title={!loading ? 'Export' : 'Carregando'}
+                                    variant="success"
+                                    disabled={loading}
+                                >
+                                    <Dropdown.Item
+                                        eventKey="1"
+                                        as="button"
+                                        onClick={() => setTypeReport('xlsx')}
+                                        type="submit"
+                                    >
+                                        Excel
+                                    </Dropdown.Item>
+                                    <Dropdown.Item
+                                        eventKey="2"
+                                        as="button"
+                                        onClick={() => setTypeReport('pdf')}
+                                        type="submit"
+                                    >
+                                        Pdf
+                                    </Dropdown.Item>
+                                </DropdownButton>
                             </Col>
                         </Row>
                     </Form>
                 </Card.Body>
             </CustomHeader>
-            <br />
-            {(users?.length > 0) &&
-                <Table striped bordered hover size="sm" responsive id="table-to-xls">
-                    <thead>
-                        <tr>
-                            <th>Nome</th>
-                            <th>Cpf</th>
-                            <th>Login</th>
-                            <th>Situação</th>
-                            <th>Data de nasc.</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {users.map(user => {
-                            return (
-                                <tr id={user.id} key={user.id}>
-                                    <td>{user.name}</td>
-                                    <td>{user.cpf}</td>
-                                    <td>{user.login}</td>
-                                    <th>{
-                                        user.disabled ?
-                                            <Badge variant="danger">Desativado</Badge> :
-                                            <Badge variant="success">Ativo</Badge>
-                                    }
-                                    </th>
-                                    <td>{moment.utc(user.birthDate).format('DD/MM/YYYY')}</td>
-                                </tr>
-                            )
-                        })}
-                    </tbody>
-                </Table>
-            }
             <br />
         </Container>
     )

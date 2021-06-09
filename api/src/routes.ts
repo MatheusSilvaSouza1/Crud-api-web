@@ -17,7 +17,6 @@ Routes.get('/user/:id', UserController.findOne)
 Routes.put('/user/:id', UserController.update)
 Routes.delete('/user', UserController.delete)
 
-
 Routes.get('/report', ReportController.report)
 
 export default Routes

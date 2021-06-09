@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatório</title>
+
+    <link href="https://unpkg.com/tailwindcss/dist/tailwind.min.css" rel="stylesheet">
+
+
+    <style>
+        #customers {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 10px;
+            border-collapse: collapse;
+            width: 8.2in;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto;
+        }
+
+        #customers table {
+            overflow-x: auto;
+        }
+
+        #customers td,
+        #customers th {
+            border: 1px solid #ddd;
+            padding: 4px;
+        }
+
+        #customers tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        #customers tr:hover {
+            background-color: #ddd;
+        }
+
+        #customers th {
+            padding-top: 8px;
+            padding-bottom: 8px;
+            text-align: left;
+            background-color: #04AA6D;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="customers">
+        <table>
+            <thead>
+                <tr>
+                    <th>name</th>
+                    <th>login</th>
+                    <th>email</th>
+                    <th>phone</th>
+                    <th>cpf</th>
+                    <th>birthDate</th>
+                    <th>nameMother</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% if (users.length> 0) { %>
+                    <% users.forEach(user=> { %>
+                        <tr>
+                            <td>
+                                <%= user.name %>
+                            </td>
+                            <td>
+                                <%= user.login %>
+                            </td>
+                            <td>
+                                <%= user.email %>
+                            </td>
+                            <td>
+                                <%= user.phone %>
+                            </td>
+                            <td>
+                                <%= user.cpf %>
+                            </td>
+                            <td>
+                                <%= user.birthDate.toLocaleDateString() %>
+                            </td>
+                            <td>
+                                <%= user.nameMother %>
+                            </td>
+                        </tr>
+                        <% }); %>
+                            <% } %>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="2">
+                        Qtd. <%=users.length%> pessoas
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</body>
+
+</html>

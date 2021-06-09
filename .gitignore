@@ -3,6 +3,7 @@ Case-para-avaliacao
 /api/node_modules
 
 api/.env
-api/.env
+api/temp_data/*
+
 resolver.txt
 Casos de testes.txt
